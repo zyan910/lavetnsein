@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>say yes</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        height: 100vh;
+        overflow: hidden;
+        transition: background 0.4s ease;
+    }
+
+    h1 {
+        margin-top: 18vh;
+        font-size: 2.5rem;
+        color: #fff;
+    }
+
+    #timer {
+        color: white;
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+    }
+
+    .buttons {
+        margin-top: 30px;
+    }
+
+    button {
+        padding: 15px 30px;
+        font-size: 18px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        margin: 10px;
+        transition: all 0.2s ease;
+    }
+
+    #yesBtn {
+        background: #ff4d6d;
+        color: white;
+    }
+
+    #noBtn {
+        background: #444;
+        color: white;
+    }
+
+    .heart {
+        position: fixed;
+        pointer-events: none;
+        font-size: 14px;
+        animation: float 1s linear forwards;
+    }
+
+    @keyframes float {
+        to {
+            transform: translateY(-40px);
+            opacity: 0;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<h1 id="question">my dear pretty lil pancake, would you be interested in meeting on the 14th of Feb completely normal day ofc</h1>
+<div id="timer">time left: <span id="count">30</span></div>
+
+<div class="buttons">
+    <button id="yesBtn">yess ofc why not ❤️</button>
+    <button id="noBtn">no (this button was placed for aesthetic purposes only)</button>
+</div>
+
+<!-- simple sounds -->
+<audio id="hoverSound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+<audio id="yesSound" src="https://actions.google.com/sounds/v1/cartoon/concussive_hit_guitar_boing.ogg"></audio>
+
+<script>
+let yesBtn = document.getElementById("yesBtn");
+let noBtn = document.getElementById("noBtn");
+let question = document.getElementById("question");
+let hoverSound = document.getElementById("hoverSound");
+let yesSound = document.getElementById("yesSound");
+let countEl = document.getElementById("count");
+
+let size = 1;
+let stage = 0;
+
+/* YES BUTTON GROWS */
+setInterval(() => {
+    size += 0.07;
+    yesBtn.style.transform = `scale(${size})`;
+}, 1000);
+
+/* COUNTDOWN TIMER RESET */
+let time = 30;
+setInterval(() => {
+    time--;
+    if (time <= 0) time = 30;
+    countEl.textContent = time;
+}, 1000);
+
+/* BACKGROUND REACTION */
+yesBtn.addEventListener("mouseenter", () => {
+    document.body.style.background = "linear-gradient(135deg,#ff4d6d,#ffb6c1)";
+});
+noBtn.addEventListener("mouseenter", () => {
+    document.body.style.background = "linear-gradient(135deg,#555,#999)";
+});
+document.body.addEventListener("mouseleave", () => {
+    document.body.style.background = "linear-gradient(135deg,#ff9a9e,#fad0c4)";
+});
+
+/* SOUND EFFECTS */
+noBtn.addEventListener("mouseenter", () => {
+    hoverSound.currentTime = 0;
+    hoverSound.play();
+});
+yesBtn.addEventListener("click", () => {
+    yesSound.play();
+});
+
+/* PROGRESSIVE QUESTIONS */
+yesBtn.addEventListener("click", () => {
+    stage++;
+    if (stage === 1) {
+        question.textContent = "umm, you sure yes (you have to say yes) 😌";
+    } else if (stage === 2) {
+        question.textContent = "great now i'm stuck w you for the second valentine's in a row (not that i mind that much) 💘 decide where to go tho";
+        document.querySelector(".buttons").style.display = "none";
+        document.getElementById("timer").style.display = "none";
+    }
+});
+
+/* HEART CURSOR TRAIL */
+document.addEventListener("mousemove", (e) => {
+    let heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤";
+    heart.style.left = e.pageX + "px";
+    heart.style.top = e.pageY + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 1000);
+});
+</script>
+
+</body>
+</html>
